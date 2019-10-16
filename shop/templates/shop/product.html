@@ -1,0 +1,57 @@
+{% extends "shop/basic.html" %}
+
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+    
+    
+    
+    <div class="col md-4">
+    {% load static %}
+    <img src="/media/{{pro.image}}">
+    <div class="row">
+    <button type="button" class="btn btn-primary mr-5 mt-5">Buy Now</button>
+    <button type="button" class="btn btn-primary mr-5 mt-5">Add to Cart</button>
+    </div>
+    </div>
+    <div class="col md-4"> 
+    <h5> {{pro.pro_name}} </h5>
+    <p> {{pro.desc}} </p>
+    <p> Sale Price </p>
+    <p> Rs. {{pro.price}} </p>
+    </div>
+    </div>
+{% endblock body %}
+
+{% block js %}
+<script>
+console.log("working");
+
+if(localStorage.getItem('cart')==null){
+  cart={};
+  
+  
+}else{
+  cart=JSON.parse(localStorage.getItem('cart'));
+  document.getElementById('cart').innerHTML=Object.keys(cart).length;
+}
+
+$('.ca').click(function(){
+  alert('hello');
+  console.log("clicked");
+  var idstr=this.id.toString();
+  
+  if(cart[idstr]!=undefined){
+    cart[idstr]=cart[idstr]+1;
+  }else{
+    cart[idstr]=1;
+  }
+  console.log(cart);
+  localStorage.setItem('cart',JSON.stringify(cart));
+  
+});
+$('#popcart').popover();
+</script>
+{% endblock js %}

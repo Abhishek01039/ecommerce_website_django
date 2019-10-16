@@ -1,0 +1,98 @@
+{% extends 'shop/basic.html' %}
+  
+<title>{% block title %} 
+{% endblock title %}</title>
+
+{% block css %}
+<style>
+.card-img-top{
+  height:100px;
+  width:80%;
+}
+h5{
+  font-size:1rem;
+}
+.row{
+  margin-left:100px;
+  margin-right:80px;
+}
+div a{
+  color: black;
+  
+}
+</style>
+{% endblock css %}
+
+{% block body %}
+  
+  <h4 style="margin-left:100px;">Electronics</h4>
+   
+   <div class="row">
+   
+    {% for i in pro %}
+    <div class="card p-2" style="width: 18rem;">
+      {% load static %}
+  <a href="../prodview/{{i.id}}"><img style="padding-left:40px;" class="card-img-top" src="/media/{{i.image}}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title" id="namepr{{i.id}}">{{i.pro_name}}</h5>
+    <h6 class="card-title" id="pricepr{{i.id}}">Rs.{{i.price}}</h6></a>
+    <button  id="{{i.id}}" href="#" class="btn btn-primary ca"> Add To Cart </button>
+    
+  </div>
+  </div>
+  
+   {% endfor %}
+ </div>
+
+
+ 
+  
+  {% endblock body %}
+
+{% block js %}
+<script>
+{% if msg|length != 0  %}
+ 
+   alert('{{msg}}');
+ // it will use to  pass url to '/'
+window.location.href='/';
+{% endif %}
+console.log("working");
+
+if(localStorage.getItem('cart')==null){
+  cart={};
+}else{
+ cart=JSON.parse(localStorage.getItem('cart'));
+   total=0;
+  for(values in cart){
+    total+=cart[values][0];
+  } 
+  document.getElementById('cart').innerHTML=total;
+}
+
+$('.ca').click(function(){
+  console.log("clicked");
+  var idstr=this.id.toString();
+  if(cart[idstr]!=undefined){
+   qty=cart[idstr][0]+1;
+   name=document.getElementById('namepr'+idstr).innerHTML;
+    cart[idstr]=[qty,name];
+  }else{
+    qty=1;
+    name=document.getElementById('namepr'+idstr).innerHTML;
+    cart[idstr]=[qty,name];
+  }
+  // console.log(cart);
+  localStorage.setItem('cart',JSON.stringify(cart));
+     total=0;
+  for(values in cart){
+
+    total+=cart[values][0];
+  } 
+  document.getElementById('cart').innerHTML=total;
+});
+
+$('#popcart').popover();
+//document.getElementById('popcart').setAttribute('data-content','<h5>cart</h5>');
+</script>
+{% endblock js %}

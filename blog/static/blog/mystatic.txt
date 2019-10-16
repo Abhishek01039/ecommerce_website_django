@@ -1,0 +1,1 @@
+This is my static Page in my First Django project in blog app.

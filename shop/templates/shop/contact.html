@@ -1,0 +1,89 @@
+{% extends "shop/basic.html" %}
+{% block css %}
+<style type="text/css">
+  input,textarea{
+    border-radius: 10px;
+    
+    margin-bottom: 10px;
+    padding: 3px;
+    margin-top: 10px;
+    margin-left: 50px;
+    width: 70%;
+
+    
+  }
+  input:focus{
+    border-bottom:2px solid blue;
+    
+  }
+.b1:hover{
+  background-color:grey;
+}
+</style>
+{% endblock css %}
+{% block body %}
+<body>
+<form action="/shop/contact/" method="post">{% csrf_token %}
+
+  <div class="container">
+    <h3>Contact Us</h3>
+    <input  type="name" id="name"  name="name" placeholder="Enter Name" required="">
+    <br>
+    <input type="email" id="email" name="email"  placeholder="Enter email" required="">
+    <br>
+    <input type="tel" id="phone" name="phone"  placeholder="Enter Phone Number" required="">
+    <br>
+    <textarea required="" name="textarea" placeholder="Enter Query"></textarea>
+    <br>
+    <br>
+    <input style="width:10%;" class="b1" type="Submit" value="Submit">
+  </div>
+</form>
+</body>
+{% endblock body %}
+
+{% block js %}
+<script>
+console.log("working");
+
+if(localStorage.getItem('cart')==null){
+  cart={};
+}else{
+  cart=JSON.parse(localStorage.getItem('cart'));
+   total=0;
+  for(values in cart){
+    total+=cart[values][0];
+  } 
+  document.getElementById('cart').innerHTML=total;
+}
+
+$('.ca').click(function(){
+  alert('hello');
+  console.log("clicked");
+  var idstr=this.id.toString();
+  
+  if(cart[idstr]!=undefined){
+    qty=cart[idstr][0]+1;
+    name="My item";
+    // cart[idstr]=cart[idstr]+1;
+    cart[idstr]=[qty,name];
+  }else{
+    qty=1;
+    name="My item";
+    cart[idstr]=[qty,name];
+  }
+  
+  localStorage.setItem('cart',JSON.stringify(cart));
+  console.log(cart);
+
+  
+});
+{% if thank %}
+     alert("Thank for contacting us. We will get you soon!");
+     // console.log(thank);
+  {% endif %}
+  
+$('#popcart').popover();
+//document.getElementById('popcart').setAttribute('data-content','<h5>cart</h5>');
+</script>
+{% endblock js %}
